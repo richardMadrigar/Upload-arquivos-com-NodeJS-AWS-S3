@@ -5,8 +5,10 @@ import cors from 'cors';
 import 'dotenv/config';
 
 import { routes } from './routes/Upload.routes';
+import { pool } from './config/configDataBase/database';
 
 const app = express();
+pool.connect();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
