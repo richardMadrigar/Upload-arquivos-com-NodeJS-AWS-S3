@@ -35,10 +35,12 @@ const storageTypes = {
   }),
 };
 
+const StorageEnv = process.env.STORAGE_TYPE === 's3' ? storageTypes.s3 : storageTypes.local;
+
 export const multerConfig = {
   dest: path.resolve(__dirname, '..', '..', '..', 'tmp', 'uploads'), // para onde os arquivos vao quando fizer o upload
 
-  storage: storageTypes.s3, // local do armazenamento
+  storage: StorageEnv, // local do armazenamento
   limits: { fileSize: 2 * 1024 * 1024 }, // 2 MB =>  limite para os arquivos
 
   // filtrar tipos de arquivos

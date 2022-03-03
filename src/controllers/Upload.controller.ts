@@ -12,16 +12,22 @@ interface IPropsFile {
 export const upload = async (req: Request, res: Response) => {
   const result: IPropsFile | any = req.file;
 
+  logger.warn(result);
+
   if (!result) return res.status(400).json({ message: 'nao tem conteudo' });
 
   const {
-    originalname: name, size, key, location,
+    originalname: name, size, key, location, filename,
   } = result;
 
   try {
     const SQL = `INSERT INTO permissao_usuarios ( name, size, key, url)
                                          VALUES ( $1, $2, $3, $4 )`;
-    const values = [name, size, key, location];
+
+    const keyDinamic = !key ? filename : key;
+    const locationA = !location ? `${process.env.APP_URL}/files/${keyDinamic}` : location;
+
+    const values = [name, size, keyDinamic, locationA];
 
     await pool.query(SQL, values);
 
