@@ -12,8 +12,6 @@ interface IPropsFile {
 export const upload = async (req: Request, res: Response) => {
   const result: IPropsFile | any = req.file;
 
-  logger.warn(result);
-
   if (!result) return res.status(400).json({ message: 'nao tem conteudo' });
 
   const {
